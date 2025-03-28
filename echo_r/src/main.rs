@@ -1,32 +1,37 @@
-use clap::{App, Arg};
+use clap::{Arg, ArgAction, Command};
 
 const SEPARATOR: &str = " ";
 
 fn main() {
     // define args
-    let text_arg = Arg::with_name("text")
+    let text_arg = Arg::new("text")
         .value_name("TEXT")
         .help("Input text")
-        .required(true)
-        .min_values(1);
+        .num_args(1..)
+        .required(true);
 
-    let omit_newline_arg = Arg::with_name("omit_newline")
-        .short("n")
+    let omit_newline_arg = Arg::new("omit_newline")
+        .short('n')
         .help("Do not print the trailing newline character.")
-        .takes_value(false);
+        .num_args(0)
+        .action(ArgAction::SetTrue);
 
     // parse args
-    let matches = App::new("echo_r")
+    let matches = Command::new("echo_r")
         .version("0.1.0")
         .arg(text_arg)
         .arg(omit_newline_arg)
         .get_matches();
 
-    let text_matched = matches.values_of_lossy("text").unwrap();
-    let omit_newline_matched = matches.is_present("omit_newline");
+    let text_matched: Vec<&str> = matches
+        .get_many::<String>("text")
+        .unwrap()
+        .map(String::as_str)
+        .collect();
+    let omit_newline_matched = matches.get_flag("omit_newline");
 
     // apply args
-    let ending = if omit_newline_matched { "" } else { "\n"};
+    let ending = if omit_newline_matched { "" } else { "\n" };
 
     // print
     print!("{}{}", text_matched.join(SEPARATOR), ending);

@@ -49,7 +49,7 @@ fn hello_n_2_text_args() -> TestResult {
 
 #[test]
 fn dies_if_no_args() -> TestResult {
-    let expected_stderr = predicate::str::contains("USAGE");
+    let expected_stderr = predicate::str::contains("Usage");
 
     let mut cmd = Command::cargo_bin("echo_r")?;
     cmd.assert().failure().stderr(expected_stderr);
