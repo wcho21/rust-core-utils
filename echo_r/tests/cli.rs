@@ -1,7 +1,8 @@
 use assert_cmd::Command;
 use predicates::prelude::*;
+use std::error::Error;
 
-type TestResult = Result<(), Box<dyn std::error::Error>>;
+type TestResult = Result<(), Box<dyn Error>>;
 
 #[test]
 fn hello_1_text_arg() -> TestResult {
