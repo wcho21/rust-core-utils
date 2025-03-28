@@ -1,7 +1,5 @@
 use clap::{Arg, ArgAction, Command};
 
-const SEPARATOR: &str = " ";
-
 fn main() {
     // define args
     let text_arg = Arg::new("text")
@@ -30,9 +28,5 @@ fn main() {
         .collect();
     let omit_newline_matched = matches.get_flag("omit_newline");
 
-    // apply args
-    let ending = if omit_newline_matched { "" } else { "\n" };
-
-    // print
-    print!("{}{}", text_matched.join(SEPARATOR), ending);
+    echo_r::echo(text_matched, omit_newline_matched);
 }
